@@ -3,19 +3,22 @@ const http = require('http')
 const ProductsController = require("./controllers/products.controllers")
 const ErrorHandler = require("./controllers/errorHandler.controller")
 const PORT= 3000
-const server = http.createServer((req, res) => {
 
-    if(req.url == "/api/products" && req.method == "GET"){
+const server = http.createServer((req, res) => {
+    const apiRoute = "api";
+    const productsRoute = `/${apiRoute}/products`
+    const singleProductRoute = /\/api\/products\/[0-9]+/
+    const {url, method } = req;
+    if(url == productsRoute && method == "GET"){
         ProductsController.get(req,res)
-    } else if(req.url.match(/\/api\/products\/[0-9]+/) && req.method == "GET"){
-        // res.end(req.url.split("/").length.toString());
+    } else if(req.url.match(singleProductRoute) && req.method == "GET"){
         ProductsController.getById(req,res);
-    } else if(req.url == "/api/products" && req.method == "POST"){
+    } else if(url == productsRoute && method == "POST"){
         ProductsController.create(req,res)
-    } else if(req.url.match(/\/api\/products\/[0-9]+/) && req.method == "PUT"){
+    } else if(url.match(singleProductRoute) && method == "PUT"){
         ProductsController.update(req,res)
     }
-    else if(req.url.match(/\/api\/products\/[0-9]+/) && req.method == "DELETE"){
+    else if(url.match(singleProductRoute) &&method == "DELETE"){
         ProductsController.remove(req,res)
     }
     else{
