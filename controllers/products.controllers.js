@@ -13,6 +13,7 @@ async function get(req,res) {
 }
 
 
+
 async function getById(req,res) {
     try{
         // const [,,id] = req.url.split("/")
@@ -35,9 +36,54 @@ async function getById(req,res) {
     }
 }
 
+
+async function create(req,res) {
+    try{
+        let body = '';
+        req.on('data', (chunk) => {
+            body += chunk.toString();
+        })
+        req.on('data',async() => {
+            const product = {id: Date.now(),...JSON.parse(body)}
+            const result = await ProductModel.create(product)
+            res.writeHead(201, {'Content-Type': 'application/json'});
+            res.write(JSON.stringify(result))
+            res.end()
+
+        })
+        // await ProductModel.create({
+        //     "id": Date.now(),
+        //     "title": "iPhone 14",
+        //     "description": "An apple mobile which is nothing like apple",
+        //     "price": 549,
+        //     "discountPercentage": 16.49,
+        //     "rating": 4.82,
+        //     "stock": 54,
+        //     "brand": "Apple",
+        //     "category": "smartphones",
+        //     "thumbnail": "https://i.dummyjson.com/data/products/28/thumbnail.jpg",
+        //     "images": [
+        //         "https://i.dummyjson.com/data/products/28/1.jpg",
+        //         "https://i.dummyjson.com/data/products/28/2.jpg",
+        //         "https://i.dummyjson.com/data/products/28/3.png",
+        //         "https://i.dummyjson.com/data/products/28/4.jpg",
+        //         "https://i.dummyjson.com/data/products/28/thumbnail.jpg"
+        //     ]
+        //
+        // });
+        // res.writeHead(201, {'Content-Type': 'application/json'});
+        // res.write(JSON.stringify({message: "product save successfully"}))
+        // res.end()
+    }
+    catch(error){
+
+    }
+}
+
 const ProductsController = {
     get,
-    getById
+    getById,
+    create
 }
 
 module.exports = ProductsController
