@@ -111,11 +111,38 @@ async function update(req,res) {
 
     }
 }
+
+
+async function remove(req,res) {
+    try{
+        // const [,,id] = req.url.split("/")
+        const id = req.url.split("/")[3]
+        const product = await ProductModel.findById(id);
+        console.log(product)
+        if (!product){
+            res.writeHead(404, {'Content-Type': 'application/json'});
+            res.write(JSON.stringify({messages: "Not Found any product"}))
+            res.end()
+        }
+        else{
+            const result = await ProductModel.remove(id);
+            res.writeHead(200, {'Content-Type': 'application/json'});
+            res.write(JSON.stringify(result))
+            res.end()
+        }
+    }
+    catch(error){
+
+    }
+}
+
+
 const ProductsController = {
     get,
     getById,
     create,
-    update
+    update,
+    remove
 }
 
 module.exports = ProductsController
