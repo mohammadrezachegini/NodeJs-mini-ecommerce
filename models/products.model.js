@@ -2,6 +2,7 @@
 const MongoConnection = require("../utils/mongo-connection")
 // const db = new MongoConnection()
 const fs = require('fs')
+const {ObjectId} = require("mongodb");
 
 
 async function find() {
@@ -18,8 +19,10 @@ async function find() {
 }
 
 async function findById(id) {
-    return new Promise((resolve, reject) => {
-        resolve(products.find(product => product.id == id))
+    const db = await new MongoConnection().Get();
+    return new Promise(async (resolve, reject) => {
+        const product = await db.collection("product").findOne({_id: new ObjectId((id))})
+        resolve(product)
     })
 
 }
