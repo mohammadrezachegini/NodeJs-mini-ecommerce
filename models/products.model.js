@@ -28,18 +28,10 @@ async function findById(id) {
 }
 
 async function create(product) {
-    return new Promise((resolve, reject) => {
-        products.push(product)
-        fs.writeFile(`${process.cwd()}/data/products.json`, JSON.stringify(products), (err) => {
-           if(err){
-               reject(err)
-           }
-           else{
-               resolve({message: "new product created ", data: product})
-           }
-
-        });
-
+    const db = await new MongoConnection().Get();
+    return new Promise(async (resolve, reject) => {
+        const result = await db.collection("products").insertOne(product)
+        resolve(result);
     })
 
 }
