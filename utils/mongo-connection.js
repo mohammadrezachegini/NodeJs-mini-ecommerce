@@ -1,7 +1,7 @@
 const { MongoClient } = require("mongodb");
 
 module.exports = class ConnectToMongoDB {
-    #DB_URL="mongodb://localhost:27017/miniproject-ecommerce";
+    #DB_URL="mongodb://127.0.0.1:27017/miniproject";
     #db = null;
     async #connect(){
         try {
