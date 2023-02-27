@@ -40,7 +40,7 @@ async function update(id,payload) {
     const db = await new MongoConnection().Get();
     return new Promise(async (resolve, reject) => {
         const result = await db.collection(ProductCollection).updateOne({_id: new ObjectId(id)},{
-            $set: {...product}
+            $set: {...payload}
         })
         resolve(result);
 
