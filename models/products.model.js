@@ -1,7 +1,17 @@
-const products  = require('./../data/products.json')
+// const products  = require('./../data/products.json')
+const MongoConnection = require("../utils/mongo-connection")
+// const db = new MongoConnection()
 const fs = require('fs')
+
+
 async function find() {
-    return new Promise((resolve, reject) => {
+    const db = await new MongoConnection().Get();
+    return new Promise(async (resolve, reject) => {
+        const products = await db.collection("product").find({
+            sort: {
+                _id: -1
+            }
+        }).toArray();
         resolve(products)
     })
 
